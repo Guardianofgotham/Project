@@ -1,0 +1,39 @@
+#background {
+    -fx-background-color: black;
+}
+
+#userNameLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#emailLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#passwordLabel {
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#confirmPassLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#createAccountButton{
+    -fx-text-fill: black;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+
