@@ -1,0 +1,25 @@
+#rootAnchorPane{
+    -fx-background-color: black;
+
+}
+#userNameLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}
+
+#passwordLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}
+
+#loginButton{
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+#createAccountButton{
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
