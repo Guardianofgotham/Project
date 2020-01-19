@@ -36,7 +36,7 @@
             <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="loginButton" layoutX="573.0" layoutY="514.0" mnemonicParsing="false" text="Login" />
-      <Button fx:id="createAccountButton" layoutX="528.0" layoutY="605.0" mnemonicParsing="false" text="I don't have account" />
+      <Button fx:id="loginButton" layoutX="573.0" layoutY="514.0" mnemonicParsing="false" onMouseClicked="#onLoginClicked" text="Login" />
+      <Button fx:id="createAccountButton" layoutX="528.0" layoutY="605.0" mnemonicParsing="false" onMouseClicked="#onSignUp" text="I don't have account" />
    </children>
 </AnchorPane>
