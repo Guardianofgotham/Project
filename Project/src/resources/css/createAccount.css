@@ -36,4 +36,10 @@
     -fx-font-weight: bold;
 }
 
+#numberLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
 

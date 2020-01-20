@@ -31,8 +31,8 @@ public class __init__ extends Application {
 	private Button loginButton;
 	@FXML
 	private Button createAccountButton;
-	static Statement executer;
-	static Stage mainStage;
+	public static Statement executer;
+	public static Stage mainStage;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -106,7 +106,6 @@ public class __init__ extends Application {
 		mainStage.show();
 		__init__.mainStage=mainStage;
 		__init__.connectToDatabase();
-		__init__.showAlert();
 	}
 
 	public static void showAlert() {

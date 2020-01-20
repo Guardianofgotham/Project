@@ -11,6 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import mainApplication.__init__;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class createAccountController {
 	@FXML
 	private AnchorPane background;
@@ -32,16 +35,61 @@ public class createAccountController {
 	private PasswordField passField;
 	@FXML
 	private PasswordField confPassField;
+	@FXML
+	private TextField numberField;
 
 	@FXML
-	public void createAccount(MouseEvent event) {
-		if(!checkInput(usernameField,emailField,passField,confPassField)){
+	public void createAccount(MouseEvent event) throws SQLException {
+		if(!checkInput(usernameField,emailField,passField,confPassField,numberField)){
+			return;
+		}
+		if(doesUsernameExist(usernameField)){
+			return;
+		}
+		if (emailExists(emailField)) {
+			return;
+		}
+		if (numberExists(numberField)) {
 			return;
 		}
 
+		showAlert("Account Created","Go back to login screen");
+		String query = "insert into userAccounts(username, password, email_id, mobile_number) value ('"+usernameField.getText()+"','"+passField.getText()+"','"+emailField.getText()+"','"+numberField.getText()+"');";
+		__init__.executer.executeUpdate(query);
+		System.out.println("Query executed");
 	}
 
-	private static boolean checkInput(TextField usernameField, TextField emailField, PasswordField passField,PasswordField confPassField){
+	public static boolean doesUsernameExist(TextField usernameField) throws SQLException {
+		String query = "select * from userAccounts where username='"+usernameField.getText()+"';";
+		ResultSet rs = __init__.executer.executeQuery(query);
+		if(rs.next()){
+			showAlert("Username already exists !!!", "Please try different name");
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean emailExists(TextField emailField) throws SQLException {
+		String query = "select * from userAccounts where email_id='"+emailField.getText()+"';";
+		ResultSet rs = __init__.executer.executeQuery(query);
+		if(rs.next()){
+			showAlert("email already exists !!!", "go to forget password!!!");
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean numberExists(TextField numberField) throws SQLException {
+		String query = "select * from userAccounts where mobile_number='"+numberField.getText()+"';";
+		ResultSet rs = __init__.executer.executeQuery(query);
+		if(rs.next()){
+			showAlert("number already exists with some other account !!!", "use another number");
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean checkInput(TextField usernameField, TextField emailField, PasswordField passField,PasswordField confPassField,TextField numberField){
 		if(usernameField.getText().length()==0){
 			showAlert("Username Cannot Be Empty","Enter Your Username in username Field");
 			return false;
