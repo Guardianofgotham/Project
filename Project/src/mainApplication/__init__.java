@@ -2,6 +2,7 @@ package mainApplication;
 
 import java.io.FileInputStream;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 
@@ -33,13 +35,14 @@ public class __init__ extends Application {
 	private Button createAccountButton;
 	public static Statement executer;
 	public static Stage mainStage;
+	public static Connection connection;
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	static void connectToDatabase() throws SQLException {
-		Platform.runLater(new Runnable(){
+		Thread t = new Thread(new Runnable(){
 			@Override
 			public void run() {
 				String host = "jdbc:mysql://localhost:3306/test";
@@ -49,13 +52,14 @@ public class __init__ extends Application {
 				try {
 					con = DriverManager.getConnection(host,user,Password);
 					__init__.executer = con.createStatement();
+					__init__.connection = con;
 					System.out.println("Connected to database");
 				} catch (SQLException e) {
 					System.out.println("Database is not setup");
 				}
 			}
 		});
-
+		t.start();
 	}
 
 	@FXML
@@ -69,6 +73,17 @@ public class __init__ extends Application {
 		else{
 			System.out.println("User not found");
 		}
+	}
+
+	@FXML
+	public void forgotPasswordScreen(MouseEvent event) throws SQLException, IOException {
+		String pathtoFXML = "src/resources/fxml/forgotPassword.fxml";
+		FXMLLoader loader = new FXMLLoader();
+		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
+		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
+		Scene sc = new Scene(root);
+		sc.getStylesheets().add("file:src/resources/css/forgotPassword.css");
+		__init__.mainStage.setScene(sc);
 	}
 
 	private boolean authenticate(String username,String password) throws SQLException {

@@ -23,3 +23,9 @@
     -fx-font-size: 15;
     -fx-font-weight: bold;
 }
+
+#forgotPasswordButton{
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
