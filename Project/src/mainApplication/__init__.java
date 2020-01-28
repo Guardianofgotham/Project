@@ -42,10 +42,10 @@ public class __init__ extends Application {
 	}
 
 	static void connectToDatabase() throws SQLException {
-		Thread t = new Thread(new Runnable(){
+		Thread toConnectToDatabase = new Thread(new Runnable(){
 			@Override
 			public void run() {
-				String host = "jdbc:mysql://localhost:3306/test";
+				String host = "jdbc:mysql://localhost:3306/dbms";
 				String user = "hardik";
 				String Password = "hardik";
 				Connection con = null;
@@ -59,7 +59,7 @@ public class __init__ extends Application {
 				}
 			}
 		});
-		t.start();
+		toConnectToDatabase.start();
 	}
 
 	@FXML

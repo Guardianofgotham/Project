@@ -48,7 +48,7 @@ public class forgotPasswordController {
 		st.setString(1,emailField.getText());
 		ResultSet rs = st.executeQuery();
 		if(rs.next()){
-			Thread t =  new Thread(new Runnable() {
+			Thread toSendMail =  new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -58,7 +58,7 @@ public class forgotPasswordController {
 					}
 				}
 			});
-			t.start();
+			toSendMail.start();
 		}
 	}
 

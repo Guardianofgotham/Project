@@ -54,7 +54,7 @@ public class createAccountController {
 		}
 
 		showAlert("Account Created","Go back to login screen");
-		String query = "insert into userAccounts(username, password, email_id, mobile_number) value ('"+usernameField.getText()+"','"+passField.getText()+"','"+emailField.getText()+"','"+numberField.getText()+"');";
+		String query = "insert into userAccounts(username, password, email_id, contact_no) value ('"+usernameField.getText()+"','"+passField.getText()+"','"+emailField.getText()+"','"+numberField.getText()+"');";
 		__init__.executer.executeUpdate(query);
 		System.out.println("Query executed");
 	}
@@ -80,7 +80,7 @@ public class createAccountController {
 	}
 
 	public static boolean numberExists(TextField numberField) throws SQLException {
-		String query = "select * from userAccounts where mobile_number='"+numberField.getText()+"';";
+		String query = "select * from userAccounts where contact_no='"+numberField.getText()+"';";
 		ResultSet rs = __init__.executer.executeQuery(query);
 		if(rs.next()){
 			showAlert("number already exists with some other account !!!", "use another number");
