@@ -2,6 +2,8 @@ package controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -11,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import mainApplication.__init__;
 
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -57,6 +60,17 @@ public class createAccountController {
 		String query = "insert into userAccounts(username, password, email_id, contact_no) value ('"+usernameField.getText()+"','"+passField.getText()+"','"+emailField.getText()+"','"+numberField.getText()+"');";
 		__init__.executer.executeUpdate(query);
 		System.out.println("Query executed");
+	}
+
+	@FXML
+	public void returnToMainScreen(MouseEvent event) throws Exception{
+		String pathtoFXML = "src/resources/fxml/__init__window__.fxml";
+		FXMLLoader loader = new FXMLLoader();
+		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
+		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
+		Scene sc = new Scene(root);
+		sc.getStylesheets().add("file:src/resources/css/mainWindow.css");
+		__init__.mainStage.setScene(sc);
 	}
 
 	public static boolean doesUsernameExist(TextField usernameField) throws SQLException {
