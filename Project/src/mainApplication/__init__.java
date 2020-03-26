@@ -2,6 +2,9 @@ package mainApplication;
 
 import java.io.FileInputStream;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,13 +29,13 @@ public class __init__ extends Application {
 	@FXML
 	private Label passwordLabel;
 	@FXML
-	private TextField userField;
+	private JFXTextField userField;
 	@FXML
-	private PasswordField passwordField;
+	private JFXPasswordField passwordField;
 	@FXML
-	private Button loginButton;
+	private JFXButton loginButton;
 	@FXML
-	private Button createAccountButton;
+	private JFXButton createAccountButton;
 	public static Statement executer;
 	public static Stage mainStage;
 	public static Connection connection;
@@ -82,7 +85,6 @@ public class __init__ extends Application {
 		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
 		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
 		Scene sc = new Scene(root);
-		sc.getStylesheets().add("file:src/resources/css/forgotPassword.css");
 		__init__.mainStage.setScene(sc);
 	}
 
