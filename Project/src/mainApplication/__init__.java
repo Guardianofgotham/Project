@@ -2,6 +2,7 @@ package mainApplication;
 
 import java.io.FileInputStream;
 
+import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -39,7 +40,6 @@ public class __init__ extends Application {
 	public static Statement executer;
 	public static Stage mainStage;
 	public static Connection connection;
-
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -66,12 +66,12 @@ public class __init__ extends Application {
 	}
 
 	@FXML
-	public void onLoginClicked(MouseEvent event) throws SQLException {
+	public void onLoginClicked(MouseEvent event) throws SQLException, IOException {
 		String username = userField.getText();
 		String password = passwordField.getText();
 		boolean isValidUser = authenticate(username,password);
 		if(isValidUser){
-			System.out.println("Yes, user found");
+			changeScene("home");
 		}
 		else{
 			System.out.println("User not found");
@@ -80,12 +80,7 @@ public class __init__ extends Application {
 
 	@FXML
 	public void forgotPasswordScreen(MouseEvent event) throws SQLException, IOException {
-		String pathtoFXML = "src/resources/fxml/forgotPassword.fxml";
-		FXMLLoader loader = new FXMLLoader();
-		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
-		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
-		Scene sc = new Scene(root);
-		__init__.mainStage.setScene(sc);
+		changeScene("forgotPassword");
 	}
 
 	private boolean authenticate(String username,String password) throws SQLException {
@@ -100,14 +95,7 @@ public class __init__ extends Application {
 	// Event Listener on Button[#createAccountButton].onMouseClicked
 	@FXML
 	public void onSignUp(MouseEvent event) throws IOException {
-		String pathtoFXML = "src/resources/fxml/createAccount.fxml";
-		FXMLLoader loader = new FXMLLoader();
-		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
-		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
-		Scene sc = new Scene(root);
-		sc.getStylesheets().add("file:src/resources/css/createAccount.css");
-		mainStage.setScene(sc);
-		mainStage.show();
+		changeScene("createAccount");
 	}
 
 	@Override
@@ -117,7 +105,6 @@ public class __init__ extends Application {
 		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
 		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
 		Scene sc = new Scene(root);
-		sc.getStylesheets().add("file:src/resources/css/mainWindow.css");
 		mainStage.setScene(sc);
 		mainStage.setResizable(false);
 		mainStage.show();
@@ -128,7 +115,7 @@ public class __init__ extends Application {
 	public static void showAlert() {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				JFXAlert alert = new JFXAlert();
 				alert.setTitle("Message Here...");
 				alert.setHeaderText("Look, an Information Dialog");
 				alert.setContentText("I have a great message for you!");
@@ -137,5 +124,13 @@ public class __init__ extends Application {
 		});
 	}
 
+	static void changeScene(String sceneName) throws IOException {
+		String pathtoFXML = "src/resources/fxml/"+sceneName+".fxml";
+		FXMLLoader loader = new FXMLLoader();
+		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
+		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
+		Scene sc = new Scene(root);
+		__init__.mainStage.setScene(sc);
+	}
 
 }

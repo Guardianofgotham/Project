@@ -69,7 +69,6 @@ public class createAccountController {
 		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
 		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
 		Scene sc = new Scene(root);
-		sc.getStylesheets().add("file:src/resources/css/mainWindow.css");
 		__init__.mainStage.setScene(sc);
 	}
 
