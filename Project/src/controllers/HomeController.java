@@ -8,6 +8,9 @@ import com.gluonhq.charm.glisten.control.DropdownButton;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,9 +88,14 @@ public class HomeController {
     }
 
     @FXML
-    void logoutPressed(MouseEvent event) {
+    void logoutPressed(MouseEvent event) throws IOException {
         System.out.println("logoutPressed");
-        System.exit(0);
+        __init__.changeScene("__init__window__");
+        File fs = new File("src/mainApplication/currUser");
+        if(fs.exists()){
+            fs.delete();
+        }
+
     }
 
     @FXML
@@ -111,7 +119,7 @@ public class HomeController {
         String userSearch = search_bar.getText();
         String Query = "Select * from books where b_name like ?;";
         PreparedStatement pstmt = __init__.connection.prepareStatement(Query);
-        System.out.println(pstmt.toString());
+        pstmt.setString(1,"%"+userSearch+"%");
         ResultSet rs = pstmt.executeQuery();
         table.setItems(Book.getObservableList(Book.getBookConditionList(rs)));
     }
