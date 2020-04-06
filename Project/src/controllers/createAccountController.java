@@ -1,5 +1,7 @@
 package controllers;
 
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -31,15 +32,15 @@ public class createAccountController {
 	@FXML
 	private Label confirmPassLabel;
 	@FXML
-	private TextField usernameField;
+	private JFXTextField usernameField;
 	@FXML
-	private TextField emailField;
+	private JFXTextField emailField;
 	@FXML
-	private PasswordField passField;
+	private JFXPasswordField passField;
 	@FXML
-	private PasswordField confPassField;
+	private JFXPasswordField confPassField;
 	@FXML
-	private TextField numberField;
+	private JFXTextField numberField;
 
 	@FXML
 	public void createAccount(MouseEvent event) throws SQLException {
@@ -72,7 +73,7 @@ public class createAccountController {
 		__init__.mainStage.setScene(sc);
 	}
 
-	public static boolean doesUsernameExist(TextField usernameField) throws SQLException {
+	public static boolean doesUsernameExist(JFXTextField usernameField) throws SQLException {
 		String query = "select * from userAccounts where username='"+usernameField.getText()+"';";
 		ResultSet rs = __init__.executer.executeQuery(query);
 		if(rs.next()){
@@ -82,7 +83,7 @@ public class createAccountController {
 		return false;
 	}
 
-	public static boolean emailExists(TextField emailField) throws SQLException {
+	public static boolean emailExists(JFXTextField emailField) throws SQLException {
 		String query = "select * from userAccounts where email_id='"+emailField.getText()+"';";
 		ResultSet rs = __init__.executer.executeQuery(query);
 		if(rs.next()){
@@ -92,7 +93,7 @@ public class createAccountController {
 		return false;
 	}
 
-	public static boolean numberExists(TextField numberField) throws SQLException {
+	public static boolean numberExists(JFXTextField numberField) throws SQLException {
 		String query = "select * from userAccounts where contact_no='"+numberField.getText()+"';";
 		ResultSet rs = __init__.executer.executeQuery(query);
 		if(rs.next()){
@@ -102,7 +103,7 @@ public class createAccountController {
 		return false;
 	}
 
-	private static boolean checkInput(TextField usernameField, TextField emailField, PasswordField passField,PasswordField confPassField,TextField numberField){
+	private static boolean checkInput(JFXTextField usernameField, JFXTextField emailField, PasswordField passField,PasswordField confPassField,JFXTextField numberField){
 		if(usernameField.getText().length()==0){
 			showAlert("Username Cannot Be Empty","Enter Your Username in username Field");
 			return false;
@@ -141,5 +142,4 @@ public class createAccountController {
 			}
 		});
 	}
-    
 }
