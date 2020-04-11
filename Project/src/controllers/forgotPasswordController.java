@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
@@ -14,20 +13,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.input.MouseEvent;
-import mainApplication.__init__;
+import mainApplication.Main;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
-import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 
 public class forgotPasswordController {
 	@FXML
@@ -44,7 +39,7 @@ public class forgotPasswordController {
 	// Event Listener on Button[#sendPassword].onMouseClicked
 	@FXML
 	public void sendPassword(MouseEvent event) throws SQLException {
-		PreparedStatement st = __init__.connection.prepareStatement("select * from userAccounts where email_id=(?)");
+		PreparedStatement st = userLoginController.connection.prepareStatement("select * from userAccounts where email_id=(?)");
 		st.setString(1,emailField.getText());
 		ResultSet rs = st.executeQuery();
 		if(rs.next()){
@@ -61,7 +56,14 @@ public class forgotPasswordController {
 			toSendMail.start();
 		}
 	}
-
+	public void onMainPageClicked(MouseEvent mouseEvent) throws IOException {
+		String pathtoFXML = "src/resources/fxml/Main.fxml";
+		FXMLLoader loader = new FXMLLoader();
+		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
+		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
+		Scene sc = new Scene(root);
+		Main.mainStage.setScene(sc);
+	}
 	private void sendEmail(String id,String password){
 
 		// email ID of Recipient.
@@ -118,11 +120,11 @@ public class forgotPasswordController {
 	// Event Listener on Button[#goBack].onMouseClicked
 	@FXML
 	public void goToMainScreen(MouseEvent event) throws IOException {
-		String pathtoFXML = "src/resources/fxml/__init__window__.fxml";
+		String pathtoFXML = "src/resources/fxml/userLogin.fxml";
 		FXMLLoader loader = new FXMLLoader();
 		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
 		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
 		Scene sc = new Scene(root);
-		__init__.mainStage.setScene(sc);
+		Main.mainStage.setScene(sc);
 	}
 }

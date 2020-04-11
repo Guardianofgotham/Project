@@ -1,5 +1,7 @@
 package mainApplication;
 
+import controllers.userLoginController;
+
 import java.io.*;
 
 public class User implements Serializable {
@@ -10,7 +12,7 @@ public class User implements Serializable {
 
     }
 
-    User(int u_id, String username, String password, String email_id,String contact_no, int age, String sex, int bonus_pts){
+    public User(int u_id, String username, String password, String email_id,String contact_no, int age, String sex, int bonus_pts){
         this.username=username;
         this.age = age;
         this.sex=sex;
@@ -53,6 +55,20 @@ public class User implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "u_id=" + u_id +
+                ", age=" + age +
+                ", bonus_pts=" + bonus_pts +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email_id='" + email_id + '\'' +
+                ", contact_no='" + contact_no + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
+
     public static User deserialize() throws IOException {
         FileInputStream file=null;
         ObjectInputStream out=null;
@@ -61,7 +77,7 @@ public class User implements Serializable {
             file = new FileInputStream("src/mainApplication/currUser");
             out = new ObjectInputStream(file);
             u = (User) out.readObject();
-            __init__.currUser=u;
+            userLoginController.currUser=u;
             return u;
         }catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

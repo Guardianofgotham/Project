@@ -12,9 +12,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import mainApplication.__init__;
+import mainApplication.Main;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -59,23 +60,32 @@ public class createAccountController {
 
 		showAlert("Account Created","Go back to login screen");
 		String query = "insert into userAccounts(username, password, email_id, contact_no) value ('"+usernameField.getText()+"','"+passField.getText()+"','"+emailField.getText()+"','"+numberField.getText()+"');";
-		__init__.executer.executeUpdate(query);
+		userLoginController.executer.executeUpdate(query);
 		System.out.println("Query executed");
 	}
 
-	@FXML
-	public void returnToMainScreen(MouseEvent event) throws Exception{
-		String pathtoFXML = "src/resources/fxml/__init__window__.fxml";
+	public void onMainPageClicked(MouseEvent mouseEvent) throws IOException {
+		String pathtoFXML = "src/resources/fxml/Main.fxml";
 		FXMLLoader loader = new FXMLLoader();
 		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
 		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
 		Scene sc = new Scene(root);
-		__init__.mainStage.setScene(sc);
+		Main.mainStage.setScene(sc);
+	}
+
+	@FXML
+	public void returnToMainScreen(MouseEvent event) throws Exception{
+		String pathtoFXML = "src/resources/fxml/userLogin.fxml";
+		FXMLLoader loader = new FXMLLoader();
+		FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
+		AnchorPane root = (AnchorPane) loader.load(fxmlStream);
+		Scene sc = new Scene(root);
+		Main.mainStage.setScene(sc);
 	}
 
 	public static boolean doesUsernameExist(JFXTextField usernameField) throws SQLException {
 		String query = "select * from userAccounts where username='"+usernameField.getText()+"';";
-		ResultSet rs = __init__.executer.executeQuery(query);
+		ResultSet rs = userLoginController.executer.executeQuery(query);
 		if(rs.next()){
 			showAlert("Username already exists !!!", "Please try different name");
 			return true;
@@ -85,7 +95,7 @@ public class createAccountController {
 
 	public static boolean emailExists(JFXTextField emailField) throws SQLException {
 		String query = "select * from userAccounts where email_id='"+emailField.getText()+"';";
-		ResultSet rs = __init__.executer.executeQuery(query);
+		ResultSet rs = userLoginController.executer.executeQuery(query);
 		if(rs.next()){
 			showAlert("email already exists !!!", "go to forget password!!!");
 			return true;
@@ -95,7 +105,7 @@ public class createAccountController {
 
 	public static boolean numberExists(JFXTextField numberField) throws SQLException {
 		String query = "select * from userAccounts where contact_no='"+numberField.getText()+"';";
-		ResultSet rs = __init__.executer.executeQuery(query);
+		ResultSet rs = userLoginController.executer.executeQuery(query);
 		if(rs.next()){
 			showAlert("number already exists with some other account !!!", "use another number");
 			return true;

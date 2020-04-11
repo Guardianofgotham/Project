@@ -16,14 +16,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import mainApplication.Book;
-import mainApplication.__init__;
+import mainApplication.HomeTable;
 
 public class HomeController {
 
@@ -70,7 +70,7 @@ public class HomeController {
     private FontAwesomeIconView user_icon; // Value injected by FXMLLoader
 
     @FXML // fx:id="table"
-    private TableView<Book> table; // Value injected by FXMLLoader
+    private TableView<HomeTable> table; // Value injected by FXMLLoader
 
     @FXML
     void advanced_searchPressed(MouseEvent event) {
@@ -90,9 +90,9 @@ public class HomeController {
     @FXML
     void logoutPressed(MouseEvent event) throws IOException {
         System.out.println("logoutPressed");
-        __init__.changeScene("__init__window__");
+        userLoginController.changeScene("Main");
         File fs = new File("src/mainApplication/currUser");
-        if(fs.exists()){
+        if (fs.exists()) {
             fs.delete();
         }
 
@@ -117,11 +117,11 @@ public class HomeController {
     void search_iconPressed(MouseEvent event) throws SQLException {
         System.out.println("search_iconPressed");
         String userSearch = search_bar.getText();
-        String Query = "Select * from books where b_name like ?;";
-        PreparedStatement pstmt = __init__.connection.prepareStatement(Query);
-        pstmt.setString(1,"%"+userSearch+"%");
+        String Query = "Select * from books Natural join written_by natural join authors natural join book_genre natural join genre where b_name like ? group by b_id order by b_id asc;";
+        PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
+        pstmt.setString(1, "%" + userSearch + "%");
         ResultSet rs = pstmt.executeQuery();
-        table.setItems(Book.getObservableList(Book.getBookConditionList(rs)));
+        table.setItems(HomeTable.getConditionedObservableListForHomeTable(rs));
     }
 
     @FXML
@@ -149,8 +149,9 @@ public class HomeController {
         System.out.println("wishlistPressed");
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
-    void initialize() throws SQLException {
+    @FXML
+        // This method is called by the FXMLLoader when initialization is complete
+    void initialize() throws SQLException, InterruptedException {
         assert home != null : "fx:id=\"home\" was not injected: check your FXML file 'home.fxml'.";
         assert my_account != null : "fx:id=\"my_account\" was not injected: check your FXML file 'home.fxml'.";
         assert profile != null : "fx:id=\"profile\" was not injected: check your FXML file 'home.fxml'.";
@@ -167,43 +168,56 @@ public class HomeController {
         this.initializeTable();
     }
 
-    void initializeTable() throws SQLException {
+    void initializeTable() throws SQLException, InterruptedException {
         table.getColumns().clear();
-        TableColumn<Book, Integer> c1 = new TableColumn<Book, Integer>();
-        c1.setCellValueFactory(new PropertyValueFactory<Book, Integer>("b_id"));
+        TableColumn<HomeTable, Integer> c1 = new TableColumn<HomeTable, Integer>();
+        c1.setCellValueFactory(new PropertyValueFactory<HomeTable, Integer>("b_id"));
         c1.setText("#");
 
-        TableColumn<Book, String> c2 = new TableColumn<Book, String>();
-        c2.setCellValueFactory(new PropertyValueFactory<Book, String>("b_name"));
+        TableColumn<HomeTable, String> c2 = new TableColumn<HomeTable, String>();
+        c2.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("b_name"));
         c2.setText("Name");
 
-        TableColumn<Book, String> c3 = new TableColumn<Book, String>();
-        c3.setCellValueFactory(new PropertyValueFactory<Book, String>("b_name"));
+        TableColumn<HomeTable, String> c3 = new TableColumn<HomeTable, String>();
+        c3.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("auth_name"));
         c3.setText("Author");
 
-        TableColumn<Book, Integer> c4 = new TableColumn<Book, Integer>();
-        c4.setCellValueFactory(new PropertyValueFactory<Book, Integer>("pub_year"));
+        TableColumn<HomeTable, Integer> c4 = new TableColumn<HomeTable, Integer>();
+        c4.setCellValueFactory(new PropertyValueFactory<HomeTable, Integer>("pub_year"));
         c4.setText("Year");
 
-        TableColumn<Book, String> c5 = new TableColumn<Book, String>();
-        c5.setCellValueFactory(new PropertyValueFactory<Book, String>("b_name"));
+        TableColumn<HomeTable, String> c5 = new TableColumn<HomeTable, String>();
+        c5.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("genre"));
         c5.setText("Genre");
 
-        TableColumn<Book, Integer> c6 = new TableColumn<Book, Integer>();
-        c6.setCellValueFactory(new PropertyValueFactory<Book, Integer>("num_pages"));
+        TableColumn<HomeTable, Integer> c6 = new TableColumn<HomeTable, Integer>();
+        c6.setCellValueFactory(new PropertyValueFactory<HomeTable, Integer>("num_pages"));
         c6.setText("Number of Pages");
 
-        TableColumn<Book, Integer> c7 = new TableColumn<Book, Integer>();
-        c7.setCellValueFactory(new PropertyValueFactory<Book, Integer>("num_copies"));
+        TableColumn<HomeTable, Integer> c7 = new TableColumn<HomeTable, Integer>();
+        c7.setCellValueFactory(new PropertyValueFactory<HomeTable, Integer>("num_copies"));
         c7.setText("Number Of Copies");
 
-        TableColumn<Book, Integer> c8 = new TableColumn<Book, Integer>();
-        c8.setCellValueFactory(new PropertyValueFactory<Book, Integer>("price"));
+        TableColumn<HomeTable, Integer> c8 = new TableColumn<HomeTable, Integer>();
+        c8.setCellValueFactory(new PropertyValueFactory<HomeTable, Integer>("price"));
         c8.setText("Price");
 
-        table.getColumns().addAll(c1,c2,c3,c4,c5,c6,c7,c8);
-        table.setItems(Book.getObservableList(Book.getBookList()));
+        TableColumn<HomeTable, String> c9 = new TableColumn<HomeTable, String>();
+        c9.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("nationality"));
+        c9.setText("nationality");
 
+        TableColumn<HomeTable, String> c10 = new TableColumn<HomeTable, String>();
+        c10.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("language"));
+        c10.setText("language");
+
+        TableColumn<HomeTable, String> c11 = new TableColumn<HomeTable, String>();
+        c11.setCellValueFactory(new PropertyValueFactory<HomeTable, String>("description"));
+        c11.setText("description");
+
+        table.getColumns().addAll(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11);
+        ObservableList<HomeTable> ob = HomeTable.getObservableListForHomeTable();
+        table.setItems(ob);
+        System.out.println(table.getItems());
     }
 
 }
