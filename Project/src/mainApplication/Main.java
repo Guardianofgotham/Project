@@ -31,6 +31,8 @@ public class Main extends Application {
     }
 
 
+
+
     public static void changeScene(String sceneName) throws IOException {
         String pathtoFXML = "src/resources/fxml/" + sceneName + ".fxml";
         FXMLLoader loader = new FXMLLoader();
@@ -47,8 +49,8 @@ public class Main extends Application {
     public void start(Stage mainStage) throws Exception {
         Main.mainStage = mainStage;
         mainStage.setResizable(false);
-        mainStage.show();
         changeScene("Main");
+        mainStage.show();
     }
 
     public void publisherbuttonPressed(MouseEvent mouseEvent) throws IOException {
@@ -60,6 +62,6 @@ public class Main extends Application {
     }
 
     public void userButtonPressed(MouseEvent mouseEvent) throws Exception {
-        userLoginController.userSetup(mainStage);
+        userLoginController.userSetup();
     }
 }

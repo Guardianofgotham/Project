@@ -41,16 +41,15 @@ public class userLoginController {
     public static User currUser;
 
 
-    public static void userSetup(Stage mainStage) throws Exception {
+    public static void userSetup() throws Exception {
         userLoginController.connectToDatabase();
-        Main.mainStage = mainStage;
         if (!CheckUserExists()) {
             String pathtoFXML = "src/resources/fxml/userLogin.fxml";
             FXMLLoader loader = new FXMLLoader();
             FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
             AnchorPane root = (AnchorPane) loader.load(fxmlStream);
             Scene sc = new Scene(root);
-            mainStage.setScene(sc);
+            Main.mainStage.setScene(sc);
         } else {
             System.out.println("Batman");
             changeScene("home");
@@ -146,7 +145,11 @@ public class userLoginController {
         FileInputStream fxmlStream = new FileInputStream(pathtoFXML);
         AnchorPane root = (AnchorPane) loader.load(fxmlStream);
         Scene sc = new Scene(root);
+        if(sc == null) System.out.println("Secne null");
+        if(Main.mainStage == null) System.out.println("Main stage null");
         Main.mainStage.setScene(sc);
     }
-
+    public void goToCartPressed(MouseEvent mouseEvent) {
+        System.out.println("Go To Cart presssed");
+    }
 }

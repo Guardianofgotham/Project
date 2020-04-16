@@ -64,7 +64,7 @@ public class forgotPasswordController {
 		Scene sc = new Scene(root);
 		Main.mainStage.setScene(sc);
 	}
-	private void sendEmail(String id,String password){
+	public static void sendEmail(String id,String password){
 
 		// email ID of Recipient.
 		String recipient = id;

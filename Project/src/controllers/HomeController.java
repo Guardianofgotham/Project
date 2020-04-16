@@ -15,15 +15,18 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import mainApplication.HomeTable;
+import mainApplication.Main;
 
 public class HomeController {
 
@@ -73,13 +76,91 @@ public class HomeController {
     private TableView<HomeTable> table; // Value injected by FXMLLoader
 
     @FXML
+    private Label userWelcomeLabel;
+
+    @FXML
+    private JFXButton buyButton;
+
+    @FXML
+    private JFXButton addToCart;
+
+
+    public JFXButton getGo_to_cart() {
+        return go_to_cart;
+    }
+
+    @FXML // fx:id="addToWishlist"
+    private JFXButton addToWishlist; // Value injected by FXMLLoader
+
+    @FXML
+    void addToWishlistPressed(MouseEvent event) throws SQLException {
+        HomeTable currItem = table.getSelectionModel().getSelectedItem();
+        try{
+            if(currItem!=null){
+                String query = "insert into wishlist (u_id, b_id) value (?,?)";
+                PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+                pstmt.setInt(1,userLoginController.currUser.getU_id());
+                pstmt.setInt(2,currItem.getB_id());
+                pstmt.executeUpdate();
+            }
+        }
+        catch(SQLIntegrityConstraintViolationException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    @FXML
+    void addToCartPressed(MouseEvent event) throws SQLException {
+        HomeTable currItem = table.getSelectionModel().getSelectedItem();
+        if(currItem!=null){
+            int numOfCopies=checkIfAlreadyInCart(currItem);
+            if(numOfCopies!=0){
+                String Query = "Update cart set numOfCopies = ? where u_id=? and b_id= ?";
+                PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
+                pstmt.setInt(1,numOfCopies+1);
+                pstmt.setInt(2,userLoginController.currUser.getU_id());
+                pstmt.setInt(3,currItem.getB_id());
+                pstmt.executeUpdate();
+            }
+            else{
+                String Query = "INSERT INTO CART (u_id, b_id, numOfCopies) VALUE (?,?,?);";
+                PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
+                pstmt.setInt(1,userLoginController.currUser.getU_id());
+                pstmt.setInt(2,currItem.getB_id());
+                pstmt.setInt(3,1);
+                pstmt.executeUpdate();
+            }
+        }
+    }
+
+    int checkIfAlreadyInCart(HomeTable currItem) throws SQLException {
+        String Query = "Select * from cart where u_id=? and b_id=?;";
+        PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
+        pstmt.setInt(1,userLoginController.currUser.getU_id());
+        pstmt.setInt(2,currItem.getB_id());
+        ResultSet rs = pstmt.executeQuery();
+        if(rs.next()){
+            return rs.getInt("numOfCopies");
+        }
+        return 0;
+    }
+
+    @FXML
+    void buyButtonPressed(MouseEvent event){
+        HomeTable currItem = table.getSelectionModel().getSelectedItem();
+        System.out.println("Buy button pressed");
+    }
+
+    @FXML
     void advanced_searchPressed(MouseEvent event) {
         System.out.println("advanced_searchPressed");
     }
 
     @FXML
-    void go_to_cartPressed(MouseEvent event) {
+    void go_to_cartPressed(MouseEvent event) throws IOException {
         System.out.println("go_to_cartPressed");
+        Main.changeScene("cart");
     }
 
     @FXML
@@ -99,8 +180,9 @@ public class HomeController {
     }
 
     @FXML
-    void my_accountPressed(MouseEvent event) {
-        System.out.println("my_accountPressed");
+    void my_accountPressed(MouseEvent event) throws IOException {
+        Main.changeScene("myAccount");
+
     }
 
     @FXML
@@ -129,6 +211,7 @@ public class HomeController {
         System.out.println("sortPressed");
     }
 
+
     @FXML
     void tablePressed(MouseEvent event) {
         System.out.println("tablePressed");
@@ -140,8 +223,9 @@ public class HomeController {
     }
 
     @FXML
-    void walletPressed(MouseEvent event) {
+    void walletPressed(MouseEvent event) throws IOException {
         System.out.println("walletPressed");
+        Main.changeScene("Wallet");
     }
 
     @FXML
@@ -165,6 +249,7 @@ public class HomeController {
         assert go_to_cart != null : "fx:id=\"go_to_cart\" was not injected: check your FXML file 'home.fxml'.";
         assert user_icon != null : "fx:id=\"user_icon\" was not injected: check your FXML file 'home.fxml'.";
         assert table != null : "fx:id=\"table\" was not injected: check your FXML file 'home.fxml'.";
+        userWelcomeLabel.setText("Hi, "+userLoginController.currUser.getUsername());
         this.initializeTable();
     }
 
@@ -217,7 +302,6 @@ public class HomeController {
         table.getColumns().addAll(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11);
         ObservableList<HomeTable> ob = HomeTable.getObservableListForHomeTable();
         table.setItems(ob);
-        System.out.println(table.getItems());
     }
 
 }

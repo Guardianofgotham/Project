@@ -4,68 +4,60 @@ import controllers.userLoginController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class HomeTable {
-    int b_id, price, pub_year, num_pages, num_copies;
+public class CartTable {
+    int b_id, price, pub_year, num_pages, user_num_copies;
     String b_name, description, language, auth_name, nationality, genre;
 
-    HomeTable()
-    {
-
-    }
-
-    public static ResultSet runQueryFoHomeTable() throws SQLException {
-        String Query = "select * from Books Natural join written_by natural join authors natural join book_genre natural join genre group by b_id order by b_id asc;";
+    public static ResultSet runQueryForCartTable() throws SQLException {
+        String Query = "select * from Books Natural join written_by natural join authors natural join book_genre natural join genre natural join cart where u_id = '" +
+                userLoginController.currUser.u_id +
+                "' group by b_id order by b_id asc;";
         ResultSet rs = userLoginController.executer.executeQuery(Query);
         return rs;
     }
 
-    public static HomeTable getNewHomeTable(ResultSet rs) throws SQLException {
-        HomeTable h = new HomeTable();
+    public static CartTable getNewCartTable(ResultSet rs) throws SQLException {
+        CartTable h = new CartTable();
         h.b_id = rs.getInt("b_id");
         h.price = rs.getInt("price");
         h.pub_year = rs.getInt("pub_year");
         h.num_pages = rs.getInt("num_pages");
-        h.num_copies = rs.getInt("num_copies");
         h.b_name = rs.getString("b_name");
         h.description = rs.getString("description");
         h.language = rs.getString("language");
         h.auth_name = rs.getString("auth_name");
         h.nationality = rs.getString("nationality");
         h.genre = rs.getString("genre");
+        h.user_num_copies = rs.getInt("cart.numOfCopies");
         return h;
     }
 
-    public static ObservableList<HomeTable> getConditionedObservableListForHomeTable(ResultSet rs) throws SQLException {
-        ArrayList<HomeTable> tb = new ArrayList<HomeTable>();
+    public static ObservableList<CartTable> getConditionedObservableListForCartTable(ResultSet rs) throws SQLException {
+        ArrayList<CartTable> tb = new ArrayList<CartTable>();
         while (rs.next()) {
-            tb.add(HomeTable.getNewHomeTable(rs));
+            tb.add(CartTable.getNewCartTable(rs));
         }
         return FXCollections.observableArrayList(tb);
     }
-
-
-    public static ObservableList<HomeTable> getObservableListForHomeTable() throws SQLException {
-        ResultSet rs = HomeTable.runQueryFoHomeTable();
-        ArrayList<HomeTable> tb = new ArrayList<HomeTable>();
+    public static ObservableList<CartTable> getObservableListForCartTable() throws SQLException {
+        ResultSet rs = CartTable.runQueryForCartTable();
+        ArrayList<CartTable> tb = new ArrayList<CartTable>();
         while (rs.next()) {
-            tb.add(HomeTable.getNewHomeTable(rs));
+            tb.add(CartTable.getNewCartTable(rs));
         }
         return FXCollections.observableArrayList(tb);
     }
-
     @Override
     public String toString() {
-        return "HomeTable{" +
+        return "CartTable{" +
                 "b_id=" + b_id +
                 ", price=" + price +
                 ", pub_year=" + pub_year +
                 ", num_pages=" + num_pages +
-                ", num_copies=" + num_copies +
                 ", b_name='" + b_name + '\'' +
                 ", description='" + description + '\'' +
                 ", language='" + language + '\'' +
@@ -99,20 +91,20 @@ public class HomeTable {
         this.pub_year = pub_year;
     }
 
+    public int getUser_num_copies() {
+        return user_num_copies;
+    }
+
+    public void setUser_num_copies(int num_pages) {
+        this.user_num_copies = num_pages;
+    }
+
     public int getNum_pages() {
         return num_pages;
     }
 
     public void setNum_pages(int num_pages) {
         this.num_pages = num_pages;
-    }
-
-    public int getNum_copies() {
-        return num_copies;
-    }
-
-    public void setNum_copies(int num_copies) {
-        this.num_copies = num_copies;
     }
 
     public String getB_name() {

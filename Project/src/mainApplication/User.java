@@ -23,7 +23,7 @@ public class User implements Serializable {
         this.contact_no=contact_no;
     }
 
-    void copy(){
+    public User copy(){
         User dup = new User();
         dup.username=this.username;
         dup.age=this.age;
@@ -33,6 +33,7 @@ public class User implements Serializable {
         dup.password=this.password;
         dup.sex=this.sex;
         dup.u_id=this.u_id;
+        return dup;
     }
 
     public void serialize() throws IOException {

@@ -16,6 +16,7 @@ import mainApplication.Main;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -84,8 +85,10 @@ public class createAccountController {
 	}
 
 	public static boolean doesUsernameExist(JFXTextField usernameField) throws SQLException {
-		String query = "select * from userAccounts where username='"+usernameField.getText()+"';";
-		ResultSet rs = userLoginController.executer.executeQuery(query);
+		String query = "select * from userAccounts where username=?;";
+		PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+		pstmt.setString(1,usernameField.getText());
+		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()){
 			showAlert("Username already exists !!!", "Please try different name");
 			return true;
@@ -94,8 +97,10 @@ public class createAccountController {
 	}
 
 	public static boolean emailExists(JFXTextField emailField) throws SQLException {
-		String query = "select * from userAccounts where email_id='"+emailField.getText()+"';";
-		ResultSet rs = userLoginController.executer.executeQuery(query);
+		String query = "select * from userAccounts where email_id=?;";
+		PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+		pstmt.setString(1,emailField.getText());
+		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()){
 			showAlert("email already exists !!!", "go to forget password!!!");
 			return true;
@@ -104,8 +109,10 @@ public class createAccountController {
 	}
 
 	public static boolean numberExists(JFXTextField numberField) throws SQLException {
-		String query = "select * from userAccounts where contact_no='"+numberField.getText()+"';";
-		ResultSet rs = userLoginController.executer.executeQuery(query);
+		String query = "select * from userAccounts where contact_no=?;";
+		PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+		pstmt.setString(1,numberField.getText());
+		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()){
 			showAlert("number already exists with some other account !!!", "use another number");
 			return true;
