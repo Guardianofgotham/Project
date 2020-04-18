@@ -102,12 +102,12 @@
             <HBox fx:id="horBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <children>
                   <FontAwesomeIconView fx:id="user_icon1" fill="#acacac" glyphName="MALE" onMouseClicked="#user_iconPressed" size="30" />
-                  <JFXRadioButton fx:id="boyRadioButton" text="I am a Boy" textFill="WHITE">
+                  <JFXRadioButton fx:id="boyRadioButton" text=" " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font></JFXRadioButton>
                   <FontAwesomeIconView fx:id="user_icon2" fill="#acacac" glyphName="FEMALE" onMouseClicked="#user_iconPressed" size="30" />
-                  <JFXRadioButton fx:id="girlRadioButton" text="I am a Girl" textFill="WHITE">
+                  <JFXRadioButton fx:id="girlRadioButton" text=" " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -116,28 +116,28 @@
             </HBox>
          </children>
         </GridPane>
-      <JFXCheckBox fx:id="showPasswordCheckBox" layoutX="1039.0" layoutY="269.0" onMouseClicked="#showPasswordPressed" text="Show Password" textFill="WHITE" />
-      <JFXButton fx:id="changeUserButton" layoutX="1033.0" layoutY="180.0" onMouseClicked="#changeUserButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
+      <JFXCheckBox fx:id="showPasswordCheckBox" layoutX="1039.0" layoutY="260.0" onMouseClicked="#showPasswordPressed" text="Show Password" textFill="WHITE" />
+      <JFXButton fx:id="changeUserButton" layoutX="1033.0" layoutY="147.0" onMouseClicked="#changeUserButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="changePasswordButton" layoutX="1033.0" layoutY="312.0" onMouseClicked="#changePasswordButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
+      <JFXButton fx:id="changePasswordButton" layoutX="1033.0" layoutY="304.0" onMouseClicked="#changePasswordButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="changeEmailAddressButton" layoutX="1033.0" layoutY="435.0" onMouseClicked="#changeEmailAddressButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
+      <JFXButton fx:id="changeEmailAddressButton" layoutX="1033.0" layoutY="409.0" onMouseClicked="#changeEmailAddressButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="changeContactButton" layoutX="1039.0" layoutY="556.0" onMouseClicked="#changeContactButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
+      <JFXButton fx:id="changeContactButton" layoutX="1039.0" layoutY="540.0" onMouseClicked="#changeContactButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="changeSexButton" layoutX="1039.0" layoutY="620.0" onMouseClicked="#changeSexButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
+      <JFXButton fx:id="changeSexButton" layoutX="1039.0" layoutY="622.0" onMouseClicked="#changeSexButtonPressed" prefHeight="37.0" prefWidth="133.0" text="Change" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

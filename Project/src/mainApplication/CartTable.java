@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CartTable {
-    int b_id, price, pub_year, num_pages, user_num_copies;
+    int b_id, price, pub_year, num_pages;
     String b_name, description, language, auth_name, nationality, genre;
 
     public static ResultSet runQueryForCartTable() throws SQLException {
@@ -32,7 +32,6 @@ public class CartTable {
         h.auth_name = rs.getString("auth_name");
         h.nationality = rs.getString("nationality");
         h.genre = rs.getString("genre");
-        h.user_num_copies = rs.getInt("cart.numOfCopies");
         return h;
     }
 
@@ -89,14 +88,6 @@ public class CartTable {
 
     public void setPub_year(int pub_year) {
         this.pub_year = pub_year;
-    }
-
-    public int getUser_num_copies() {
-        return user_num_copies;
-    }
-
-    public void setUser_num_copies(int num_pages) {
-        this.user_num_copies = num_pages;
     }
 
     public int getNum_pages() {

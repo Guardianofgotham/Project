@@ -114,42 +114,77 @@ public class HomeController {
     void addToCartPressed(MouseEvent event) throws SQLException {
         HomeTable currItem = table.getSelectionModel().getSelectedItem();
         if(currItem!=null){
-            int numOfCopies=checkIfAlreadyInCart(currItem);
-            if(numOfCopies!=0){
-                String Query = "Update cart set numOfCopies = ? where u_id=? and b_id= ?";
-                PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
-                pstmt.setInt(1,numOfCopies+1);
-                pstmt.setInt(2,userLoginController.currUser.getU_id());
-                pstmt.setInt(3,currItem.getB_id());
-                pstmt.executeUpdate();
+            boolean numOfCopies=checkIfAlreadyInCart(currItem);
+            if(numOfCopies){
+                createAccountController.showAlert("Failed To Add to Cart","Already Present In Cart");
             }
             else{
-                String Query = "INSERT INTO CART (u_id, b_id, numOfCopies) VALUE (?,?,?);";
+                String Query = "INSERT INTO CART (u_id, b_id) VALUE (?,?);";
                 PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
                 pstmt.setInt(1,userLoginController.currUser.getU_id());
                 pstmt.setInt(2,currItem.getB_id());
-                pstmt.setInt(3,1);
                 pstmt.executeUpdate();
+                createAccountController.showAlert("Successfully Added to Cart","Added In Cart");
             }
         }
     }
 
-    int checkIfAlreadyInCart(HomeTable currItem) throws SQLException {
+    boolean checkIfAlreadyInCart(HomeTable currItem) throws SQLException {
         String Query = "Select * from cart where u_id=? and b_id=?;";
         PreparedStatement pstmt = userLoginController.connection.prepareStatement(Query);
         pstmt.setInt(1,userLoginController.currUser.getU_id());
         pstmt.setInt(2,currItem.getB_id());
         ResultSet rs = pstmt.executeQuery();
-        if(rs.next()){
-            return rs.getInt("numOfCopies");
-        }
-        return 0;
+        return rs.next();
     }
 
     @FXML
-    void buyButtonPressed(MouseEvent event){
+    void buyButtonPressed(MouseEvent event) throws SQLException, InterruptedException {
         HomeTable currItem = table.getSelectionModel().getSelectedItem();
-        System.out.println("Buy button pressed");
+        String query = "select balance from useraccounts where u_id=?;";
+        PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+        pstmt.setInt(1,userLoginController.currUser.getU_id());
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        int balance = rs.getInt("balance");
+        if(currItem!=null && currItem.getNum_copies()>0){
+            if(balance>=currItem.getPrice()){
+                int newBal = balance-currItem.getPrice();
+                String query2 = "update useraccounts set balance=? where u_id=?";
+                pstmt = userLoginController.connection.prepareStatement(query2);
+                pstmt.setInt(1, newBal);
+                pstmt.setInt(2, userLoginController.currUser.getU_id());
+                pstmt.executeUpdate();
+                afterSuccesfullyPurchased(currItem);
+                createAccountController.showAlert("Succesfully Purchased","Balance Deducted");
+                initializeTable();
+            }
+            else{
+                createAccountController.showAlert("Not Enough Balance","Transaction Failed");
+            }
+        }
+        else{
+            createAccountController.showAlert("Please Select Book First","No Book Selected");
+        }
+    }
+
+    void afterSuccesfullyPurchased(HomeTable currItem) throws SQLException {
+        String query = "insert into all_order (u_id, b_id, total_bill, ordered_at) value (?,?,?,?);";
+        PreparedStatement pstmt = userLoginController.connection.prepareStatement(query);
+        pstmt.setInt(1,userLoginController.currUser.getU_id());
+        pstmt.setInt(2,currItem.getB_id());
+        pstmt.setInt(3,currItem.getPrice());
+        String q0 = "Select now() as curr_time;";
+        ResultSet rs = userLoginController.executer.executeQuery(q0);
+        rs.next();
+        pstmt.setTimestamp(4,rs.getTimestamp("curr_time"));
+        pstmt.executeUpdate();
+        //Changing Stock
+        query = "update books set num_copies=? where b_id=?;";
+        pstmt = userLoginController.connection.prepareStatement(query);
+        pstmt.setInt(1,currItem.getNum_copies()-1);
+        pstmt.setInt(2, currItem.getB_id());
+        pstmt.executeUpdate();
     }
 
     @FXML

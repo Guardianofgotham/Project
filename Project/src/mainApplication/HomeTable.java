@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HomeTable {
-    int b_id, price, pub_year, num_pages, num_copies;
+    int b_id, price, pub_year, num_pages, num_copies; //Num of Copies in Stock
     String b_name, description, language, auth_name, nationality, genre;
 
     HomeTable()

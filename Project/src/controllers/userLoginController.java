@@ -70,6 +70,9 @@ public class userLoginController {
             System.out.println("Database is not setup");
         }
     }
+
+
+
     public void onMainPageClicked(MouseEvent mouseEvent) throws IOException {
         String pathtoFXML = "src/resources/fxml/Main.fxml";
         FXMLLoader loader = new FXMLLoader();
@@ -99,9 +102,9 @@ public class userLoginController {
         pstmt.setString(1, username);
         ResultSet rs = pstmt.executeQuery();
         rs.next();
-        User u = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
-                rs.getString(4), rs.getString(5), rs.getInt(6),
-                rs.getString(7), rs.getInt(8));
+        User u = new User(rs.getInt("u_id"), rs.getString("username"), rs.getString("password"),
+                rs.getString("email_id"), rs.getString("contact_no"), rs.getInt("age"),
+                rs.getString("sex"));
         userLoginController.currUser = u;
         return u;
     }

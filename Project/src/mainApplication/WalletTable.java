@@ -9,18 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class WalletTable {
-    String card_num;
     int total_bill;
     String ordered_at;
-    String book_name;
+    String b_name;
     int no_of_copies;
 
-    public String getBook_name() {
-        return book_name;
+    public String getB_name() {
+        return b_name;
     }
 
-    public void setBook_name(String book_name) {
-        this.book_name = book_name;
+    public void setB_name(String b_name) {
+        this.b_name = b_name;
     }
 
 
@@ -33,15 +32,6 @@ public class WalletTable {
         this.no_of_copies = no_of_copies;
     }
 
-
-
-    public String getCard_num() {
-        return card_num;
-    }
-
-    public void setCard_num(String card_num) {
-        this.card_num = card_num;
-    }
 
     public int getTotal_bill() {
         return total_bill;
@@ -60,7 +50,10 @@ public class WalletTable {
     }
 
     public static ResultSet runQueryForWalletTable() throws SQLException {
-        String Query = "select * from all_order  where u_id = " +
+//        String Query = "select * from all_order natural join books where u_id = " +
+//                userLoginController.currUser.u_id +
+//                ";";
+        String Query = "select * from books  join all_order using (b_id) where u_id = " +
                 userLoginController.currUser.u_id +
                 ";";
         ResultSet rs = userLoginController.executer.executeQuery(Query);
@@ -70,7 +63,7 @@ public class WalletTable {
 
     public static WalletTable getNewWalletTable(ResultSet rs) throws SQLException {
         WalletTable h = new WalletTable();
-        h.card_num = rs.getString("card_num");
+        h.b_name = rs.getString("b_name");
         h.ordered_at = rs.getString("ordered_at");
         h.total_bill = rs.getInt("total_bill");
         h.no_of_copies = rs.getInt("num_copies");
@@ -97,7 +90,7 @@ public class WalletTable {
     @Override
     public String toString() {
         return "WalletTable{" +
-                " card_no = " + card_num + '\'' +
+                " book name = " + b_name + '\'' +
                 ", total_bill = " + total_bill +
                 ", ordered_at = '" + ordered_at + '\'' +
                 '}';

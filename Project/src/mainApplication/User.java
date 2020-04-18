@@ -5,19 +5,18 @@ import controllers.userLoginController;
 import java.io.*;
 
 public class User implements Serializable {
-    int u_id, age, bonus_pts;
-    String username, password, email_id, contact_no, sex;
+    int u_id, age;
+    String username, password, email_id, contact_no, sex, card_num;
     User()
     {
 
     }
 
-    public User(int u_id, String username, String password, String email_id,String contact_no, int age, String sex, int bonus_pts){
+    public User(int u_id, String username, String password, String email_id,String contact_no, int age, String sex){
         this.username=username;
         this.age = age;
         this.sex=sex;
         this.password=password;
-        this.bonus_pts=bonus_pts;
         this.u_id=u_id;
         this.email_id=email_id;
         this.contact_no=contact_no;
@@ -27,7 +26,6 @@ public class User implements Serializable {
         User dup = new User();
         dup.username=this.username;
         dup.age=this.age;
-        dup.bonus_pts=this.bonus_pts;
         dup.contact_no=this.contact_no;
         dup.email_id=this.email_id;
         dup.password=this.password;
@@ -61,7 +59,6 @@ public class User implements Serializable {
         return "User{" +
                 "u_id=" + u_id +
                 ", age=" + age +
-                ", bonus_pts=" + bonus_pts +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email_id='" + email_id + '\'' +
@@ -110,13 +107,6 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public int getBonus_pts() {
-        return bonus_pts;
-    }
-
-    public void setBonus_pts(int bonus_pts) {
-        this.bonus_pts = bonus_pts;
-    }
 
     public String getUsername() {
         return username;

@@ -351,7 +351,7 @@ public class myAccountController {
         ToggleGroup tg = new ToggleGroup();
         boyRadioButton.setToggleGroup(tg);
         girlRadioButton.setToggleGroup(tg);
-        horBox.setSpacing(20);
+        horBox.setSpacing(30);
         userWelcomeLabel.setText("Hi, "+userLoginController.currUser.getUsername());
     }
 
