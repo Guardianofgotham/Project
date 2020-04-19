@@ -84,6 +84,9 @@ public class HomeController {
     @FXML
     private JFXButton addToCart;
 
+    @FXML
+    private JFXButton helpButton;
+
 
     public JFXButton getGo_to_cart() {
         return go_to_cart;
@@ -109,6 +112,10 @@ public class HomeController {
         }
     }
 
+    @FXML
+    void helpButtonPressed(MouseEvent event) throws IOException {
+        userLoginController.changeScene("help");
+    }
 
     @FXML
     void addToCartPressed(MouseEvent event) throws SQLException {

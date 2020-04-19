@@ -108,6 +108,9 @@ public class myAccountController {
     private HBox horBox;
 
     @FXML
+    private Label visiblePassword;
+
+    @FXML
     void changeContactButtonPressed(MouseEvent event) throws SQLException {
         if(changeContactButton.getText().equals(userLoginController.currUser.getUsername())){
             return;
@@ -266,10 +269,10 @@ public class myAccountController {
     @FXML
     void showPasswordPressed(MouseEvent event) {
         if(showPasswordCheckBox.isSelected()){
-
+            visiblePassword.setVisible(true);
         }
         else{
-
+            visiblePassword.setVisible(false);
         }
     }
 
@@ -353,6 +356,10 @@ public class myAccountController {
         girlRadioButton.setToggleGroup(tg);
         horBox.setSpacing(30);
         userWelcomeLabel.setText("Hi, "+userLoginController.currUser.getUsername());
+        visiblePassword.setText(passwordField.getText());
+        passwordField.setOnKeyReleased(e->{
+            visiblePassword.setText(passwordField.getText());
+        });
     }
 
     public static void sendEmail(String subject, String messageToSend){

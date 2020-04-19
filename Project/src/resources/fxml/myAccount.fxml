@@ -142,5 +142,10 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
+      <Label fx:id="visiblePassword" layoutX="1039.0" layoutY="225.0" prefHeight="20.0" prefWidth="122.0" textFill="WHITE" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
